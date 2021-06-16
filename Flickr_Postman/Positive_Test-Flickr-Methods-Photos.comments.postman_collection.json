@@ -1,0 +1,1028 @@
+{
+	"info": {
+		"_postman_id": "2a7bee12-063f-4190-a0d0-dc2b2c85ee15",
+		"name": "Positive_Test-Flickr-Methods-Photos.comments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "flickr.photos.comments.addComment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Functionality\r",
+							"pm.test(\"-----Function: Status code is OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"-----Function: Comment is added and comment_id saved in the Environment!\"]=true; \r",
+							"            //comment_id saved in the Environment\r",
+							"            pm.environment.set(\"my_comment_id\", jsonData.comment.id);\r",
+							"            break;\r",
+							"        case \"fail\": tests[\"-----Function: FailCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=false; break;\r",
+							"        default: tests[\"-----Function: Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// Test Response Status\r",
+							"pm.test(\"Response must be valid and have a body\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 900ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(900);   \r",
+							"});\r",
+							"pm.test(\"Response size is less than 2.00KB\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2048);   \r",
+							"});\r",
+							"\r",
+							"// Test Response Header\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Length\");\r",
+							"    pm.response.to.have.header(\"Date\");\r",
+							"    pm.response.to.have.header(\"set-cookie\");    \r",
+							"    pm.response.to.have.header(\"x-content-type-options\");\r",
+							"    pm.response.to.have.header(\"x-frame-options\");  \r",
+							"    pm.response.to.have.header(\"X-Cache\");\r",
+							"    pm.response.to.have.header(\"Via\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Pop\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Id\");\r",
+							"});\r",
+							"pm.test(\"test for a response header having a particular value\", () => {\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+							"  pm.expect(pm.response.headers.get('Connection')).to.eql('keep-alive');\r",
+							"  pm.expect(pm.response.headers.get('server')).to.eql('Apache/2.4.46 (Ubuntu)');\r",
+							"});\r",
+							"\r",
+							"// Test Response Body\r",
+							"pm.test(\"Test Response Body OK\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.stat).to.eql(\"ok\");\r",
+							"});\r",
+							"pm.test(\"Test author\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.comment.author).to.eql(pm.environment.get(\"my_user_id\"));\r",
+							"    pm.expect(jsonData.comment.authorname).to.eql(pm.environment.get(\"my_user_name\"));\r",
+							"});\r",
+							"pm.test(\"Test id photo\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"my_photo_id\"));\r",
+							"});\r",
+							"//чудная (бессмысленная) проверка равенства того, что пришло в Body а затем было записано в Env\r",
+							"pm.test(\"Test comment\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.comment._content).to.eql(pm.environment.get(\"comment_text\"));\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": true,
+				"followRedirects": true,
+				"disableCookies": false,
+				"disableUrlEncoding": false,
+				"tlsPreferServerCiphers": false,
+				"maxRedirects": 10
+			},
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "includeBodyHash",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "timestamp",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "nonce",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.comments.addComment&photo_id={{my_photo_id}}&comment_text={{comment_text}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.comments.addComment",
+							"description": "Add comment to a photo as the currently authenticated user"
+						},
+						{
+							"key": "photo_id",
+							"value": "{{my_photo_id}}",
+							"description": "(Required) The id of the photo to add a comment to."
+						},
+						{
+							"key": "comment_text",
+							"value": "{{comment_text}}",
+							"description": "(Required) Text of the comment. PUT HERE! Do not into the Environment!!!!!"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flickr.photos.comments.editComment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"-----Function: Status code is OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"-----Function: Comment updated!\"]=true; break;\r",
+							"        case \"fail\": tests[\"-----Function: FailCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=false; break;\r",
+							"        default: tests[\"-----Function: Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// Test Response Status\r",
+							"pm.test(\"Response must be valid and have a body\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 900ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(900);   \r",
+							"});\r",
+							"pm.test(\"Response size is less than 2.00KB\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2048);   \r",
+							"});\r",
+							"\r",
+							"// Test Response Header\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Length\");\r",
+							"    pm.response.to.have.header(\"Date\");\r",
+							"    pm.response.to.have.header(\"set-cookie\");    \r",
+							"    pm.response.to.have.header(\"x-content-type-options\");\r",
+							"    pm.response.to.have.header(\"x-frame-options\");  \r",
+							"    pm.response.to.have.header(\"X-Cache\");\r",
+							"    pm.response.to.have.header(\"Via\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Pop\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Id\");\r",
+							"});\r",
+							"pm.test(\"Test for a response header having a particular value\", () => {\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+							"  pm.expect(pm.response.headers.get('Connection')).to.eql('keep-alive');\r",
+							"  pm.expect(pm.response.headers.get('server')).to.eql('Apache/2.4.46 (Ubuntu)');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.comments.editComment&comment_id={{my_comment_id}}&comment_text={{comment_text_new}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.comments.editComment",
+							"description": "Edit the text of a comment as the currently authenticated user."
+						},
+						{
+							"key": "comment_id",
+							"value": "{{my_comment_id}}",
+							"description": "(Required) The id of the comment to edit."
+						},
+						{
+							"key": "comment_text",
+							"value": "{{comment_text_new}}",
+							"description": "(Required) Update the comment to this text."
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flickr.photos.comments.deleteComment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"-----Function: Status code is OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"-----Function: Comment deleted!\"]=true; \r",
+							"                pm.environment.set(\"my_comment_id_deleted\", pm.environment.get(\"my_comment_id\"));        \r",
+							"        break;\r",
+							"        case \"fail\": tests[\"-----Function: FailCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=false; break;\r",
+							"        default: tests[\"-----Function: Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// Test Response Status\r",
+							"pm.test(\"Response must be valid and have a body\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 900ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(900);   \r",
+							"});\r",
+							"pm.test(\"Response size is less than 2.00KB\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2048);   \r",
+							"});\r",
+							"\r",
+							"// Test Response Header\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Length\");\r",
+							"    pm.response.to.have.header(\"Date\");\r",
+							"    pm.response.to.have.header(\"set-cookie\");    \r",
+							"    pm.response.to.have.header(\"x-content-type-options\");\r",
+							"    pm.response.to.have.header(\"x-frame-options\");  \r",
+							"    pm.response.to.have.header(\"X-Cache\");\r",
+							"    pm.response.to.have.header(\"Via\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Pop\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Id\");\r",
+							"});\r",
+							"pm.test(\"Test for a response header having a particular value\", () => {\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+							"  pm.expect(pm.response.headers.get('Connection')).to.eql('keep-alive');\r",
+							"  pm.expect(pm.response.headers.get('server')).to.eql('Apache/2.4.46 (Ubuntu)');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.comments.deleteComment&comment_id={{my_comment_id}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.comments.deleteComment",
+							"description": "Delete a comment as the currently authenticated user."
+						},
+						{
+							"key": "comment_id",
+							"value": "{{my_comment_id}}",
+							"description": "(Required) The id of the comment to delete."
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flickr.photos.comments.getList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"-----Function: Status code is OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"-----Function: Returns the comments for a photo!\"]=true; break;\r",
+							"        case \"fail\": tests[\"-----Function: FailCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=false; break;\r",
+							"        default: tests[\"-----Function: Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Test Response Status\r",
+							"pm.test(\"Response must be valid and have a body\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 900ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(900);   \r",
+							"});\r",
+							"pm.test(\"Response size is less than 2.00KB\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2048);   \r",
+							"});\r",
+							"\r",
+							"// Test Response Header\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Length\");\r",
+							"    pm.response.to.have.header(\"Date\");\r",
+							"    pm.response.to.have.header(\"set-cookie\");    \r",
+							"    pm.response.to.have.header(\"x-content-type-options\");\r",
+							"    pm.response.to.have.header(\"x-frame-options\");  \r",
+							"    pm.response.to.have.header(\"X-Cache\");\r",
+							"    pm.response.to.have.header(\"Via\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Pop\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Id\");\r",
+							"});\r",
+							"pm.test(\"test for a response header having a particular value\", () => {\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+							"  pm.expect(pm.response.headers.get('Connection')).to.eql('keep-alive');\r",
+							"  pm.expect(pm.response.headers.get('server')).to.eql('Apache/2.4.46 (Ubuntu)');\r",
+							"});\r",
+							"\r",
+							"// Test Response Body\r",
+							"pm.test(\"Test Response Body frame\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.stat).to.eql(\"ok\");\r",
+							"    pm.expect(jsonData.stat).to.not.eql(null);\r",
+							"    pm.expect(jsonData.comments.photo_id).to.not.eql(null);\r",
+							" // if comment is present then ...\r",
+							"    pm.test(\"The list of photos is present\", function () \r",
+							"    {\r",
+							"        pm.expect(pm.response.text()).to.include(\"_content\");\r",
+							"        pm.expect(jsonData.comments.comment.id).to.not.eql(null); \r",
+							"        pm.expect(jsonData.comments.comment.author).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment.author_is_deleted).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment.authorname).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment.iconserver).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment.iconfarm).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment.datecreate).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment.permalink).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment.path_alias).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment.realname).to.not.eql(null);\r",
+							"        pm.expect(jsonData.comments.comment._content).to.not.eql(null);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Test Response Body id_photo\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.comments.photo_id).to.eql(pm.environment.get(\"photo_id\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//convert UTC date to Timestamp \r",
+							"pm.environment.set(\"unix_min_comment_date\", \"\"+Date.parse(pm.environment.get(\"utc_min_comment_date\"))/1000);\r",
+							"pm.environment.set(\"unix_max_comment_date\", \"\"+Date.parse(pm.environment.get(\"utc_max_comment_date\"))/1000);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.comments.getList&photo_id={{photo_id}}&min_comment_date={{unix_min_comment_date}}&max_comment_date={{unix_max_comment_date}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.comments.getList",
+							"description": "Returns the comments for a photo"
+						},
+						{
+							"key": "photo_id",
+							"value": "{{photo_id}}",
+							"description": "(Required) The id of the photo to fetch comments for."
+						},
+						{
+							"key": "min_comment_date",
+							"value": "{{unix_min_comment_date}}",
+							"description": "(Optional) Minimum date that a a comment was added. The date should be in the form of a unix timestamp."
+						},
+						{
+							"key": "max_comment_date",
+							"value": "{{unix_max_comment_date}}",
+							"description": "(Optional) Maximum date that a comment was added. The date should be in the form of a unix timestamp."
+						}
+					]
+				},
+				"description": "Returns the comments for a photo"
+			},
+			"response": []
+		},
+		{
+			"name": "flickr.photos.comments.getRecentForContacts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"-----Function: Status code is OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"-----Function: Return the list of photos belonging to your contacts that have been commented on recently!\"]=true; break;\r",
+							"        case \"fail\": tests[\"-----Function: FailCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=false; break;\r",
+							"        default: tests[\"-----Function: Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Test Response Status\r",
+							"pm.test(\"Response must be valid and have a body\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 900ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(900);   \r",
+							"});\r",
+							"pm.test(\"Response size is less than 10.00KB\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(10240);   \r",
+							"});\r",
+							"\r",
+							"// Test Response Header\r",
+							"    pm.test(\"Content-Type is present\", function () { \r",
+							"    pm.response.to.have.header(\"Content-Length\");        \r",
+							"    pm.response.to.have.header(\"Date\");\r",
+							"    pm.response.to.have.header(\"set-cookie\");    \r",
+							"    pm.response.to.have.header(\"x-content-type-options\");\r",
+							"    pm.response.to.have.header(\"x-frame-options\");  \r",
+							"    pm.response.to.have.header(\"X-Cache\");\r",
+							"    pm.response.to.have.header(\"Via\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Pop\");\r",
+							"    pm.response.to.have.header(\"X-Amz-Cf-Id\");\r",
+							"});\r",
+							"pm.test(\"Test for a response header having a particular value\", () => {\r",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+							"  pm.expect(pm.response.headers.get('Connection')).to.eql('keep-alive');\r",
+							"  pm.expect(pm.response.headers.get('server')).to.eql('Apache/2.4.46 (Ubuntu)');\r",
+							"});\r",
+							"\r",
+							"// Test Response Body\r",
+							"pm.test(\"Test Response Body frame\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.stat).to.eql(\"ok\");\r",
+							"    pm.expect(jsonData.stat).to.not.eql(null);\r",
+							"    pm.expect(jsonData.photos.page).to.not.eql(null);\r",
+							"    pm.expect(jsonData.photos.pages).to.not.eql(null);\r",
+							"    pm.expect(jsonData.photos.perpage).to.not.eql(null);\r",
+							"    pm.expect(jsonData.photos.total).to.not.eql(null);\r",
+							"    pm.expect(jsonData.photos.photo).to.not.eql(null);\r",
+							"\r",
+							" // if comment is present then ...\r",
+							"    pm.test(\"The list of photos is present\", function () \r",
+							"    {\r",
+							"        pm.expect(pm.response.text()).to.include(\"isfamily\");\r",
+							"        pm.expect(jsonData.photos.photo.id).to.not.eql(null); \r",
+							"        pm.expect(jsonData.photos.photo.owner).to.not.eql(null);\r",
+							"        pm.expect(jsonData.photos.photo.secret).to.not.eql(null);\r",
+							"        pm.expect(jsonData.photos.photo.server).to.not.eql(null);\r",
+							"        pm.expect(jsonData.photos.photo.farm).to.not.eql(null);\r",
+							"        pm.expect(jsonData.photos.photo.title).to.not.eql(null);\r",
+							"        pm.expect(jsonData.photos.photo.ispublic).to.not.eql(null);\r",
+							"        pm.expect(jsonData.photos.photo.isfriend).to.not.eql(null);\r",
+							"        pm.expect(jsonData.photos.photo.isfamily).to.not.eql(null);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//convert UTC date to Timestamp \r",
+							"pm.environment.set(\"unix_date_lastcomment\", \"\"+Date.parse(pm.environment.get(\"utc_date_lastcomment\"))/1);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.comments.getRecentForContacts&date_lastcomment={{unix_date_lastcomment}}&extras&per_page&page",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.comments.getRecentForContacts",
+							"description": "Return the list of photos belonging to your contacts that have been commented on recently."
+						},
+						{
+							"key": "date_lastcomment",
+							"value": "{{unix_date_lastcomment}}",
+							"description": "(Optional) Limits the resultset to photos that have been commented on since this date. The date should be in the form of a Unix timestamp.\nThe default, and maximum, offset is (1) hour."
+						},
+						{
+							"key": "contacts_filter",
+							"value": "",
+							"description": "(Optional) A comma-separated list of contact NSIDs to limit the scope of the query to.",
+							"disabled": true
+						},
+						{
+							"key": "extras",
+							"value": null
+						},
+						{
+							"key": "per_page",
+							"value": null
+						},
+						{
+							"key": "page",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth1",
+		"oauth1": [
+			{
+				"key": "addParamsToHeader",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "verifier",
+				"value": "{{oauth_verifier}}",
+				"type": "string"
+			},
+			{
+				"key": "callback",
+				"value": "{{oauth_callback}}",
+				"type": "string"
+			},
+			{
+				"key": "tokenSecret",
+				"value": "{{oauth_token_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "token",
+				"value": "{{oauth_token}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerSecret",
+				"value": "{{consumerSecret}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerKey",
+				"value": "{{consumerKey}}",
+				"type": "string"
+			},
+			{
+				"key": "signatureMethod",
+				"value": "HMAC-SHA1",
+				"type": "string"
+			},
+			{
+				"key": "version",
+				"value": "1.0",
+				"type": "string"
+			},
+			{
+				"key": "addEmptyParamsToSign",
+				"value": false,
+				"type": "boolean"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

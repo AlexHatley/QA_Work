@@ -1,0 +1,367 @@
+{
+	"info": {
+		"_postman_id": "5d8982df-6461-45d2-9c68-7a9854633306",
+		"name": "Flickr-Authorization",
+		"description": "Step 1 — Get a Request Token:\nGET endpoint: https://www.flickr.com/services/oauth/request_token\nI am writing in the Environment the data of my flickr app: \nconsumerKey = 5360296d75144a2eb6ab3bfcf9b2eec0\nconsumerSecret = a5cc5d3d90714b03\nand\noauth_callback = http://example.com\nI make a request.\nI get Response Body:\noauth_callback_confirmed=true&oauth_token=72157719159022368-036e41978d6be513&oauth_token_secret=c8383f9777d42bb3\nTest cod write in the Environment:\ntmp_oauth_token=72157719159022368-036e41978d6be513\ntmp_oauth_token_secret=c8383f9777d42bb3\n\nStep 2— Get the User Authorization.\nGET endpoint: https://www.flickr.com/services/oauth/authorize?oauth_token=72157719159022368-036e41978d6be513    \nI take the resulting URL and make a request from the browser!!!!!\nOpen this URL in a browser and log in to any Flickr account.\nConfirm OK. \nI get Response URL:\nhttps://example.com/?oauth_token=72157719159022368-036e41978d6be513&oauth_verifier=e8b1c5fbd5972ab5\nI write in the Environment manually:\noauth_verifier=e8b1c5fbd5972ab5\n\n\nStep 3— Exch the Request Token for an Access Token.\nGET endpoint: https://www.flickr.com/services/oauth/access_token\nI get Response Body:\nfullname=Alexander%20Hatley&oauth_token=72157719159986841-1ad056c826889790&oauth_token_secret=ab9f2fac125a7e50&user_nsid=109137992%40N02&username=Alexander%20Hatley\nTest cod write in the Environment:\noauth_token=72157719159986841-1ad056c826889790\noauth_token_secret=ab9f2fac125a7e50\n\nStep 4: Verifying the access token\nendpoint: https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.test.login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Step 1 — Get a Request Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// clear environment\r",
+							"//pm.environment.unset(\"oauth_token\");\r",
+							"//pm.environment.unset(\"oauth_token_secret\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const str = pm.response.text();\r",
+							"    pm.environment.set(\"tmp_oauth_token\", str.slice(42,76));\r",
+							"    pm.environment.set(\"tmp_oauth_token_secret\", str.slice(96));\r",
+							"});\r",
+							"\r",
+							"if (responseCode.code===200){\r",
+							"    tests[\"tmp_oauth_token = GOOD!\"]=true;\r",
+							"    tests[\"tmp_oauth_token_secret = GOOD!\"]=true;\r",
+							"     } \r",
+							"if (responseCode.code===401){ \r",
+							"    tests[\"Request failed! Repeat again!\"]=false;\r",
+							"} "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/oauth/request_token",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"oauth",
+						"request_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 2— Get the User Authorization.     Open this URL in a browser and log in to any Flickr account !!!!!",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/oauth/authorize?oauth_token={{tmp_oauth_token}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"oauth",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "oauth_token",
+							"value": "{{tmp_oauth_token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 3— Exch the Request Token for an Access Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const str = pm.response.text();\r",
+							"    //Replacement oauth_token and oauth_token_secret\r",
+							"    pm.environment.set(\"oauth_token\", str.slice(40,74));\r",
+							"    pm.environment.set(\"oauth_token_secret\", str.slice(94,110));\r",
+							"    // \r",
+							"    pm.environment.set(\"user_nsid\", str.slice(121,136));\r",
+							"    pm.environment.set(\"user_name\", str.slice(146));\r",
+							"});\r",
+							"\r",
+							"if (responseCode.code===200){\r",
+							"    tests[\"oauth_token = GOOD!\"]=true;\r",
+							"    tests[\"oauth_token_secret = GOOD!\"]=true;\r",
+							"     } \r",
+							"if (responseCode.code===401){ \r",
+							"    tests[\"Request failed! Repeat again!\"]=false;\r",
+							"} "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{tmp_oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{tmp_oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/oauth/access_token",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"oauth",
+						"access_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 4: Verifying the access token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"The token is verified! User is saved in environment.\"]=true;\r",
+							"            pm.environment.set(\"my_user_id\", jsonData.user.id); \r",
+							"            pm.environment.set(\"my_user_name\", jsonData.user.username._content);\r",
+							"        break;\r",
+							"        case \"fail\": tests[\"ErrorCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=true; break;\r",
+							"        default: tests[\"Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "timestamp",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "nonce",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.test.login",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.test.login"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

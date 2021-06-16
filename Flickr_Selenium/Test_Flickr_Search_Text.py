@@ -1,0 +1,5 @@
+text1="USA - Texas - Lake Livingston State Park 2021"
+text2="USA - Texas - Spring - Winter storm 2021"
+text3="USA - New Mexico - Ah-Shi-Sle-Pah Wilderness"
+text4="USA - New Mexico - White Sands National Park"
+text5="USA - New Mexico - Angel Peak Scenic Area"

@@ -1,0 +1,486 @@
+{
+	"info": {
+		"_postman_id": "b097ac82-93f2-4d82-a753-71436ac1cfe1",
+		"name": "Flickr-Methods-Photos.geo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "flickr.photos.geo.photosForLocation - Bad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"A list of photos is returned!\"]=true; break;\r",
+							"        case \"fail\": tests[\"ErrorCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=true; break;\r",
+							"        default: tests[\"Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.geo.photosForLocation&lat={{latitude}}&lon={{longitude}}&accuracy={{accuracy}}&extras&per_page&page",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.geo.photosForLocation",
+							"description": "Return a list of photos for the calling user at a specific latitude, longitude and accuracy"
+						},
+						{
+							"key": "lat",
+							"value": "{{latitude}}",
+							"description": "(Required) The latitude whose valid range is -90 to 90. Anything more than 6 decimal places will be truncated."
+						},
+						{
+							"key": "lon",
+							"value": "{{longitude}}",
+							"description": "(Required) The longitude whose valid range is -180 to 180. Anything more than 6 decimal places will be truncated."
+						},
+						{
+							"key": "accuracy",
+							"value": "{{accuracy}}",
+							"description": "(Optional) Recorded accuracy level of the location information. World level is 1, Country is ~3, Region ~6, City ~11, Street ~16. Current range is 1-16. Defaults to 16 if not specified."
+						},
+						{
+							"key": "extras",
+							"value": null,
+							"description": "(Optional) A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o"
+						},
+						{
+							"key": "per_page",
+							"value": null,
+							"description": "(Optional) Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500."
+						},
+						{
+							"key": "page",
+							"value": null,
+							"description": "(Optional) The page of results to return. If this argument is omitted, it defaults to 1."
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flickr.photos.geo.setLocation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"The geo data set!\"]=true; break;\r",
+							"        case \"fail\": tests[\"ErrorCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=true; break;\r",
+							"        default: tests[\"Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.geo.setLocation&photo_id={{my_photo_id}}&lat={{latitude}}&lon={{longitude}}&accuracy=&context=0",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.geo.setLocation",
+							"description": "Sets the geo data (latitude and longitude and, optionally, the accuracy level) for a photo. Before users may assign location data to a photo they must define who, by default, may view that information. Users can edit this preference at http://www.flickr.com/account/geo/privacy/. If a user has not set this preference, the API method will return an error."
+						},
+						{
+							"key": "photo_id",
+							"value": "{{my_photo_id}}",
+							"description": "(Required) The id of the photo to set location data for."
+						},
+						{
+							"key": "lat",
+							"value": "{{latitude}}",
+							"description": "(Required) The latitude whose valid range is -90 to 90. Anything more than 6 decimal places will be truncated."
+						},
+						{
+							"key": "lon",
+							"value": "{{longitude}}",
+							"description": "(Required) The longitude whose valid range is -180 to 180. Anything more than 6 decimal places will be truncated."
+						},
+						{
+							"key": "accuracy",
+							"value": "",
+							"description": "(Optional) Recorded accuracy level of the location information. World level is 1, Country is ~3, Region ~6, City ~11, Street ~16. Current range is 1-16. Defaults to 16 if not specified."
+						},
+						{
+							"key": "context",
+							"value": "0",
+							"description": "(Optional) Context is a numeric value representing the photo's geotagginess beyond latitude and longitude. For example, you may wish to indicate that a photo was taken \"indoors\" or \"outdoors\". The current list of context IDs is : 0 - not defined. 1 - indoors. 2 - outdoors. The default context for geotagged photos is 0, or \"not defined\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flickr.photos.geo.getLocation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"The geo data get and saved in the Envaronment!!\"]=true; \r",
+							"        pm.environment.set(\"latitude\", jsonData.photo.location.latitude);\r",
+							"        pm.environment.set(\"longitude\", jsonData.photo.location.longitude);\r",
+							"        pm.environment.set(\"accuracy\", jsonData.photo.location.accuracy);\r",
+							"        break;\r",
+							"        case \"fail\": tests[\"ErrorCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=true; break;\r",
+							"        default: tests[\"Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.geo.getLocation&photo_id={{my_photo_id}}&extras",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.geo.getLocation",
+							"description": "Get the geo data (latitude and longitude and the accuracy level) for a photo."
+						},
+						{
+							"key": "photo_id",
+							"value": "{{my_photo_id}}",
+							"description": "(Required) The id of the photo you want to retrieve location data for."
+						},
+						{
+							"key": "extras",
+							"value": null,
+							"description": "(Optional) Extra flags."
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth1",
+		"oauth1": [
+			{
+				"key": "addParamsToHeader",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "verifier",
+				"value": "{{oauth_verifier}}",
+				"type": "string"
+			},
+			{
+				"key": "callback",
+				"value": "{{oauth_callback}}",
+				"type": "string"
+			},
+			{
+				"key": "tokenSecret",
+				"value": "{{oauth_token_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "token",
+				"value": "{{oauth_token}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerSecret",
+				"value": "{{consumerSecret}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerKey",
+				"value": "{{consumerKey}}",
+				"type": "string"
+			},
+			{
+				"key": "signatureMethod",
+				"value": "HMAC-SHA1",
+				"type": "string"
+			},
+			{
+				"key": "version",
+				"value": "1.0",
+				"type": "string"
+			},
+			{
+				"key": "addEmptyParamsToSign",
+				"value": false,
+				"type": "boolean"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

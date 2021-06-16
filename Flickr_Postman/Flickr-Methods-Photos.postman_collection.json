@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "e5e6ade3-94ed-4e9d-88b5-015e7abf624d",
+		"name": "Flickr-Methods-Photos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "flickr.photos.search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    switch (jsonData.stat){\r",
+							"        case \"ok\": tests[\"Return a list of photos matching some criteria!\"]=true; break;\r",
+							"        case \"fail\": tests[\"ErrorCode=  \" + \" \" + jsonData.code +\".  \" + \" \" + jsonData.message]=true; break;\r",
+							"        default: tests[\"Sory, we are out of\"]=false;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth1",
+					"oauth1": [
+						{
+							"key": "addParamsToHeader",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "verifier",
+							"value": "{{oauth_verifier}}",
+							"type": "string"
+						},
+						{
+							"key": "callback",
+							"value": "{{oauth_callback}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerSecret",
+							"value": "{{consumerSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "consumerKey",
+							"value": "{{consumerKey}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenSecret",
+							"value": "{{oauth_token_secret}}",
+							"type": "string"
+						},
+						{
+							"key": "token",
+							"value": "{{oauth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "signatureMethod",
+							"value": "HMAC-SHA1",
+							"type": "string"
+						},
+						{
+							"key": "version",
+							"value": "1.0",
+							"type": "string"
+						},
+						{
+							"key": "addEmptyParamsToSign",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.flickr.com/services/rest?nojsoncallback=1&format=json&method=flickr.photos.search&user_id&tags&tag_mode&text=&min_upload_date &max_upload_date&max_taken_date&license&sort&privacy_filter&bbox&accuracy=16&safe_search&content_type&machine_tags&machine_tag_mode&group_id&contacts&woe_id&place_id&media&has_geo&geo_context&lat=30.137902&lon=-95.356464&radius&radius_units&is_commons&in_gallery&is_getty&extras&per_page&page",
+					"protocol": "https",
+					"host": [
+						"www",
+						"flickr",
+						"com"
+					],
+					"path": [
+						"services",
+						"rest"
+					],
+					"query": [
+						{
+							"key": "nojsoncallback",
+							"value": "1"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "method",
+							"value": "flickr.photos.search"
+						},
+						{
+							"key": "user_id",
+							"value": null,
+							"description": "(Optional) The NSID of the user who's photo to search. If this parameter isn't passed then everybody's public photos will be searched. A value of \"me\" will search against the calling user's photos for authenticated calls."
+						},
+						{
+							"key": "tags",
+							"value": null,
+							"description": "(Optional) A comma-delimited list of tags. Photos with one or more of the tags listed will be returned. You can exclude results that match a term by prepending it with a - character."
+						},
+						{
+							"key": "tag_mode",
+							"value": null,
+							"description": "(Optional) Either 'any' for an OR combination of tags, or 'all' for an AND combination. Defaults to 'any' if not specified"
+						},
+						{
+							"key": "text",
+							"value": "",
+							"description": "(Optional) A free text search. Photos who's title, description or tags contain the text will be returned. You can exclude results that match a term by prepending it with a - character."
+						},
+						{
+							"key": "min_upload_date ",
+							"value": null,
+							"description": "(Optional) Minimum upload date. Photos with an upload date greater than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime"
+						},
+						{
+							"key": "max_upload_date",
+							"value": null,
+							"description": "(Optional) Maximum upload date. Photos with an upload date less than or equal to this value will be returned. The date can be in the form of a unix timestamp or mysql datetime."
+						},
+						{
+							"key": "max_taken_date",
+							"value": null,
+							"description": "(Optional) Maximum taken date. Photos with an taken date less than or equal to this value will be returned. The date can be in the form of a mysql datetime or unix timestamp"
+						},
+						{
+							"key": "license",
+							"value": null,
+							"description": "(Optional) The license id for photos (for possible values see the flickr.photos.licenses.getInfo method). Multiple licenses may be comma-separated."
+						},
+						{
+							"key": "sort",
+							"value": null,
+							"description": "(Optional) The order in which to sort returned photos. Defaults to date-posted-desc (unless you are doing a radial geo query, in which case the default sorting is by ascending distance from the point specified). The possible values are: date-posted-asc, date-posted-desc, date-taken-asc, date-taken-desc, interestingness-desc, interestingness-asc, and relevance."
+						},
+						{
+							"key": "privacy_filter",
+							"value": null,
+							"description": "(Optional) Return photos only matching a certain privacy level. This only applies when making an authenticated call to view photos you own. Valid values are:\n1 public photos\n2 private photos visible to friends\n3 private photos visible to family\n4 private photos visible to friends & family\n5 completely private photos"
+						},
+						{
+							"key": "bbox",
+							"value": null,
+							"description": "(Optional) A comma-delimited list of 4 values defining the Bounding Box of the area that will be searched. The 4 values represent the bottom-left corner of the box and the top-right corner, minimum_longitude, minimum_latitude, maximum_longitude, maximum_latitude.\n\nLongitude has a range of -180 to 180 , latitude of -90 to 90. Defaults to -180, -90, 180, 90 if not specified.\n\nUnlike standard photo queries, geo (or bounding box) queries will only return 250 results per page.\n\nGeo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against \"parameterless searches\" for queries without a geo component.\n\nA tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future)"
+						},
+						{
+							"key": "accuracy",
+							"value": "16",
+							"description": "(Optional) Recorded accuracy level of the location information. Current range is 1-16 :\nWorld level is 1\nCountry is ~3\nRegion is ~6\nCity is ~11\nStreet is ~16\nDefaults to maximum value if not specified."
+						},
+						{
+							"key": "safe_search",
+							"value": null,
+							"description": "(Optional) Safe search setting:\n1 for safe.\n2 for moderate.\n3 for restricted.\n(Please note: Un-authed calls can only see Safe content.)"
+						},
+						{
+							"key": "content_type",
+							"value": null,
+							"description": "(Optional) Content Type setting:\n1 for photos only.\n2 for screenshots only.\n3 for 'other' only.\n4 for photos and screenshots.\n5 for screenshots and 'other'.\n6 for photos and 'other'.\n7 for photos, screenshots, and 'other' (all)."
+						},
+						{
+							"key": "machine_tags",
+							"value": null,
+							"description": "(Optional) Aside from passing in a fully formed machine tag, there is a special syntax for searching on specific properties :\nFind photos using the 'dc' namespace : \"machine_tags\" => \"dc:\"\nFind photos with a title in the 'dc' namespace : \"machine_tags\" => \"dc:title=\"\nFind photos titled \"mr. camera\" in the 'dc' namespace : \"machine_tags\" => \"dc:title=\\\"mr. camera\\\"\nFind photos whose value is \"mr. camera\" : \"machine_tags\" => \"*:*=\\\"mr. camera\\\"\"\nFind photos that have a title, in any namespace : \"machine_tags\" => \"*:title=\"\nFind photos that have a title, in any namespace, whose value is \"mr. camera\" : \"machine_tags\" => \"*:title=\\\"mr. camera\\\"\"\nFind photos, in the 'dc' namespace whose value is \"mr. camera\" : \"machine_tags\" => \"dc:*=\\\"mr. camera\\\"\"\nMultiple machine tags may be queried by passing a comma-separated list. The number of machine tags you can pass in a single query depends on the tag mode (AND or OR) that you are querying with. \"AND\" queries are limited to (16) machine tags. \"OR\" queries are limited to (8)."
+						},
+						{
+							"key": "machine_tag_mode",
+							"value": null,
+							"description": "(Optional) Either 'any' for an OR combination of tags, or 'all' for an AND combination. Defaults to 'any' if not specified."
+						},
+						{
+							"key": "group_id",
+							"value": null,
+							"description": "(Optional) The id of a group who's pool to search. If specified, only matching photos posted to the group's pool will be returned."
+						},
+						{
+							"key": "contacts",
+							"value": null,
+							"description": "(Optional) Search your contacts. Either 'all' or 'ff' for just friends and family. (Experimental)"
+						},
+						{
+							"key": "woe_id",
+							"value": null,
+							"description": "(Optional) A 32-bit identifier that uniquely represents spatial entities. (not used if bbox argument is present).\nGeo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against \"parameterless searches\" for queries without a geo component.\nA tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future)."
+						},
+						{
+							"key": "place_id",
+							"value": null,
+							"description": "(Optional) A Flickr place id. (not used if bbox argument is present).\n\nGeo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against \"parameterless searches\" for queries without a geo component.\n\nA tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future)."
+						},
+						{
+							"key": "media",
+							"value": null,
+							"description": "(Optional) Filter results by media type. Possible values are all (default), photos or videos"
+						},
+						{
+							"key": "has_geo",
+							"value": null,
+							"description": "(Optional) Any photo that has been geotagged, or if the value is \"0\" any photo that has not been geotagged.\n\nGeo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against \"parameterless searches\" for queries without a geo component.\n\nA tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future)."
+						},
+						{
+							"key": "geo_context",
+							"value": null,
+							"description": "(Optional) Geo context is a numeric value representing the photo's geotagginess beyond latitude and longitude. For example, you may wish to search for photos that were taken \"indoors\" or \"outdoors\".\n\nThe current list of context IDs is :\n\n0, not defined.\n1, indoors.\n2, outdoors.\n\n\nGeo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against \"parameterless searches\" for queries without a geo component.\n\nA tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future)."
+						},
+						{
+							"key": "lat",
+							"value": "30.137902",
+							"description": "(Optional) A valid latitude, in decimal format, for doing radial geo queries.\n\nGeo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against \"parameterless searches\" for queries without a geo component.\n\nA tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future)."
+						},
+						{
+							"key": "lon",
+							"value": "-95.356464",
+							"description": "(Optional) A valid longitude, in decimal format, for doing radial geo queries.\n\nGeo queries require some sort of limiting agent in order to prevent the database from crying. This is basically like the check against \"parameterless searches\" for queries without a geo component.\n\nA tag, for instance, is considered a limiting agent as are user defined min_date_taken and min_date_upload parameters — If no limiting factor is passed we return only photos added in the last 12 hours (though we may extend the limit in the future)."
+						},
+						{
+							"key": "radius",
+							"value": null,
+							"description": "(Optional) A valid radius used for geo queries, greater than zero and less than 20 miles (or 32 kilometers), for use with point-based geo queries. The default value is 5 (km)."
+						},
+						{
+							"key": "radius_units",
+							"value": null,
+							"description": "(Optional) The unit of measure when doing radial geo queries. Valid options are \"mi\" (miles) and \"km\" (kilometers). The default is \"km\"."
+						},
+						{
+							"key": "is_commons",
+							"value": null,
+							"description": "(Optional) Limit the scope of the search to only photos that are part of the Flickr Commons project. Default is false."
+						},
+						{
+							"key": "in_gallery",
+							"value": null,
+							"description": "(Optional) Limit the scope of the search to only photos that are in a gallery? Default is false, search all photos."
+						},
+						{
+							"key": "is_getty",
+							"value": null,
+							"description": "(Optional) Limit the scope of the search to only photos that are for sale on Getty. Default is false."
+						},
+						{
+							"key": "extras",
+							"value": null,
+							"description": "(Optional) A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o"
+						},
+						{
+							"key": "per_page",
+							"value": null,
+							"description": "(Optional) Number of photos to return per page. If this argument is omitted, it defaults to 100. The maximum allowed value is 500."
+						},
+						{
+							"key": "page",
+							"value": null,
+							"description": "(Optional) The page of results to return. If this argument is omitted, it defaults to 1."
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth1",
+		"oauth1": [
+			{
+				"key": "addEmptyParamsToSign",
+				"value": false,
+				"type": "boolean"
+			},
+			{
+				"key": "addParamsToHeader",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "verifier",
+				"value": "{{oauth_verifier}}",
+				"type": "string"
+			},
+			{
+				"key": "callback",
+				"value": "{{oauth_callback}}",
+				"type": "string"
+			},
+			{
+				"key": "tokenSecret",
+				"value": "{{oauth_token_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "token",
+				"value": "{{oauth_token}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerSecret",
+				"value": "{{consumerSecret}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerKey",
+				"value": "{{consumerKey}}",
+				"type": "string"
+			},
+			{
+				"key": "signatureMethod",
+				"value": "HMAC-SHA1",
+				"type": "string"
+			},
+			{
+				"key": "version",
+				"value": "1.0",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
