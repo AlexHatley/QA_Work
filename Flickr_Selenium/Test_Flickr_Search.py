@@ -48,5 +48,5 @@ content2 =driver.find_element(By.XPATH,"//span[@class='secondary']").text
 print (content2)
 N2=len(driver.find_elements(By.CLASS_NAME,"overlay"))
 print (N2,"photos are displayed\r")
-print (THE END)
-# driver.quit()
+print ("THE END")
+driver.quit()
